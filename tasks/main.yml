@@ -1,0 +1,27 @@
+---
+- name: Download Scala
+  get_url: url=http://www.scala-lang.org/files/archive/scala-{{ scala_version }}.tgz
+           dest=/usr/local/src/scala-{{ scala_version }}.tgz
+
+- name: Extract and install Scala
+  command: tar -C /opt -xzf /usr/local/src/scala-{{ scala_version }}.tgz
+           creates=/opt/scala-{{ scala_version }}
+
+- name: Symlink Scala into /usr/local/bin
+  file: src=/opt/scala-{{ scala_version }}/bin/{{ item }}
+        dest=/usr/local/bin/{{ item }}
+        state=link
+  with_items:
+    - fsc
+    - scala
+    - scalac
+    - scaladoc
+    - scalap
+
+- name: Download SBT package
+  get_url: url=https://dl.bintray.com/sbt/debian/sbt-{{ scala_sbt_version }}.deb
+           dest=/usr/local/src/sbt-{{ scala_sbt_version }}.deb
+
+- name: Install SBT
+  apt: deb=/usr/local/src/sbt-{{ scala_sbt_version }}.deb
+       state=installed
