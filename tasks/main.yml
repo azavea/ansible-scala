@@ -4,8 +4,9 @@
            dest=/usr/local/src/scala-{{ scala_version }}.tgz
 
 - name: Extract and install Scala
-  command: tar -C /opt -xzf /usr/local/src/scala-{{ scala_version }}.tgz
-           creates=/opt/scala-{{ scala_version }}
+  unarchive: src=/usr/local/src/scala-{{ scala_version }}.tgz
+             dest=/opt
+             copy=no
 
 - name: Symlink Scala into /usr/local/bin
   file: src=/opt/scala-{{ scala_version }}/bin/{{ item }}
