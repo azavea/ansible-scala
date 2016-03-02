@@ -11,5 +11,5 @@ galaxy_info:
     - trusty
   categories:
   - development
-dependencies:
-  - { role: "azavea.java" }
+#dependencies:
+#  - { role: "azavea.java" }
