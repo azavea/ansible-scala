@@ -1,16 +1,17 @@
 ---
 - name: Download Scala
   get_url: url=http://www.scala-lang.org/files/archive/scala-{{ scala_version }}.tgz
-           dest=/usr/local/src/scala-{{ scala_version }}.tgz
+           dest={{ scala_src_dir }}/scala-{{ scala_version }}.tgz
 
 - name: Extract and install Scala
-  unarchive: src=/usr/local/src/scala-{{ scala_version }}.tgz
-             dest=/opt
+  unarchive: src={{ scala_src_dir }}/scala-{{ scala_version }}.tgz
+             dest={{ scala_usr_orig_dir }}
              copy=no
+             creates={{ scala_usr_orig_dir }}/scala-{{ scala_version }}
 
 - name: Symlink Scala into /usr/local/bin
-  file: src=/opt/scala-{{ scala_version }}/bin/{{ item }}
-        dest=/usr/local/bin/{{ item }}
+  file: src={{ scala_usr_orig_dir }}/scala-{{ scala_version }}/bin/{{ item }}
+        dest={{ scala_usr_dir }}/{{ item }}
         state=link
   with_items:
     - fsc
@@ -21,8 +22,8 @@
 
 - name: Download SBT package
   get_url: url=https://dl.bintray.com/sbt/debian/sbt-{{ scala_sbt_version }}.deb
-           dest=/usr/local/src/sbt-{{ scala_sbt_version }}.deb
+           dest={{ scala_src_dir }}/sbt-{{ scala_sbt_version }}.deb
 
 - name: Install SBT
-  apt: deb=/usr/local/src/sbt-{{ scala_sbt_version }}.deb
+  apt: deb={{ scala_src_dir }}/sbt-{{ scala_sbt_version }}.deb
        state=installed
