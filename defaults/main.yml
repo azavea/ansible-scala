@@ -1,3 +1,6 @@
 ---
 scala_version: "2.11.1"
 scala_sbt_version: "0.13.6"
+scala_src_dir: /usr/local/src
+scala_usr_dir: /usr/local/bin
+scala_usr_orig_dir: /opt
