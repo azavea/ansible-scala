@@ -1,0 +1,51 @@
+---
+- hosts: all
+  gather_facts: False
+  become: True
+  pre_tasks:
+
+    # Check Ubuntu release version to determine if we need to install python 2,
+    # an Ansible dependency that isn't included by default in Ubuntu 16.04 and
+    # up.
+
+    - name: Check Ubuntu release
+      raw: cat /etc/lsb-release | grep DISTRIB_RELEASE | cut -d "=" -f2
+      register: ubuntu_release
+
+    - debug: msg="Running Ubuntu version {{ ubuntu_release.stdout|float }}"
+
+    # Update apt cache and install python 2 for Ubuntu versions greater than
+    # 16.04
+
+    - name: Update APT cache
+      raw: apt-get update
+      become: True
+
+    - name: Install python
+      raw: apt-get install -yq python
+      become: True
+      when: "{{ ubuntu_release.stdout| version_compare('16.04', '>=') }}"
+
+    - name: Create local facts directory
+      file:
+        path: /etc/ansible/facts.d
+        state: directory
+        mode: u=rw,g=rw,o=rw
+        owner: ubuntu
+        group: ubuntu
+
+    # Setting facts for use by testinfra
+    - name: Set desired SBT and Scala versions
+      template:
+        src:  templates/molecule.fact.j2
+        dest: /etc/ansible/facts.d/molecule.fact
+        owner: ubuntu
+        group: ubuntu
+        mode: u=rw,g=rw,o=rw
+
+    # Gather facts once ansible dependencies are installed
+    - name: Gather facts
+      setup:
+
+  roles:
+     - { role: "ansible-scala" }

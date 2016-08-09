@@ -1,3 +1,7 @@
 .vagrant
 
-examples/roles/azavea.java
+# Molecule
+.molecule
+*.cache
+*.log
+*__pycache__*
