@@ -1,8 +1,0 @@
----
-- hosts: all
-
-  pre_tasks:
-    - apt: update_cache=yes
-
-  roles:
-    - { role: "azavea.scala" }
