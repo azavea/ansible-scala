@@ -6,6 +6,9 @@ An Ansible role for installing Scala.
 
 - `scala_version` - Scala version
 - `scala_sbt_version` - SBT version
+- `scala_src_dir` - the folder containing the installer archive (default: `/usr/local/src`)
+- `scala_usr_dir` - the parent folder for the symlinks to the scala binaries (default: `/usr/local/bin`)
+- `scala_usr_orig_dir` - the parent folder for the installed scala folder (default: `/opt`)
 
 ## Testing
 Tests are done using [molecule](http://molecule.readthedocs.io/). To run the test suite, install molecule and its dependencies and run ` molecule test` from the folder containing molecule.yml. To add additional tests, add a [testinfra](http://testinfra.readthedocs.org/) python script in the [tests](./tests/) directory, or add a function to [test_scala.py](./tests/test_scala.py). Information about available Testinfra modules is available [here](http://testinfra.readthedocs.io/en/latest/modules.html).
